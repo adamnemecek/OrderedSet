@@ -412,27 +412,6 @@ extension OrderedSetGenerator where T: Comparable {
 
 }
 
-public func +<T: Hashable, S: Sequence> (lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> where S.Iterator.Element == T {
-    let joinedSet = lhs.copy()
-    joinedSet.append(contentsOf: rhs)
-
-    return joinedSet
-}
-
-public func +=<T: Hashable, S: Sequence> (lhs: inout OrderedSet<T>, rhs: S) where S.Iterator.Element == T {
-    lhs.append(contentsOf: rhs)
-}
-
-public func -<T: Hashable, S: Sequence> (lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> where S.Iterator.Element == T {
-    let purgedSet = lhs.copy()
-    purgedSet.remove(rhs)
-
-    return purgedSet
-}
-
-public func -=<T: Hashable, S: Sequence> (lhs: inout OrderedSet<T>, rhs: S) where S.Iterator.Element == T {
-    lhs.remove(rhs)
-}
 
 extension OrderedSet: Equatable {
     public static func ==(lhs: OrderedSet, rhs: OrderedSet) -> Bool {
@@ -447,6 +426,28 @@ extension OrderedSet: Equatable {
         }
 
         return true
+    }
+
+    public static func +<S: Sequence> (lhs: OrderedSet, rhs: S) -> OrderedSet<T> where S.Iterator.Element == T {
+        let joinedSet = lhs.copy()
+        joinedSet.append(contentsOf: rhs)
+
+        return joinedSet
+    }
+
+    public static func +=<S: Sequence> (lhs: inout OrderedSet, rhs: S) where S.Iterator.Element == T {
+        lhs.append(contentsOf: rhs)
+    }
+
+    public static func -<S: Sequence> (lhs: OrderedSet, rhs: S) -> OrderedSet<T> where S.Iterator.Element == T {
+        let purgedSet = lhs.copy()
+        purgedSet.remove(rhs)
+
+        return purgedSet
+    }
+
+    public static func -=<S: Sequence> (lhs: inout OrderedSet, rhs: S) where S.Iterator.Element == T {
+        lhs.remove(rhs)
     }
 }
 
