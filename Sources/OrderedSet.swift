@@ -408,7 +408,9 @@ public struct OrderedSetGenerator<T: Hashable>: IteratorProtocol {
     }
 }
 
-extension OrderedSetGenerator where T: Comparable {}
+extension OrderedSetGenerator where T: Comparable {
+    
+}
 
 public func +<T: Hashable, S: Sequence> (lhs: OrderedSet<T>, rhs: S) -> OrderedSet<T> where S.Iterator.Element == T {
     let joinedSet = lhs.copy()
@@ -432,20 +434,20 @@ public func -=<T: Hashable, S: Sequence> (lhs: inout OrderedSet<T>, rhs: S) wher
     lhs.remove(rhs)
 }
 
-extension OrderedSet: Equatable { }
-
-public func ==<T: Hashable> (lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool {
-    if lhs.count != rhs.count {
-        return false
-    }
-    
-    for object in lhs {
-        if lhs.contents[object] != rhs.contents[object] {
+extension OrderedSet: Equatable {
+    public static func ==(lhs: OrderedSet, rhs: OrderedSet) -> Bool {
+        if lhs.count != rhs.count {
             return false
         }
+
+        for object in lhs {
+            if lhs.contents[object] != rhs.contents[object] {
+                return false
+            }
+        }
+
+        return true
     }
-    
-    return true
 }
 
 extension OrderedSet: CustomStringConvertible {
